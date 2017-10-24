@@ -2,7 +2,6 @@ package github.eddy.game.protocol;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,5 @@ public class BaseChannelInitializer extends ChannelInitializer<SocketChannel> {
         for (Class<? extends AbstractMessageHandler> handler : handlers) {
             pipeline.addLast(handler.newInstance());
         }
-
-        log.debug("连接上:" + ch.remoteAddress());
     }
 }

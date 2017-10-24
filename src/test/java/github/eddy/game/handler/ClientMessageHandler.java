@@ -1,4 +1,4 @@
-package github.eddy.game.client.handler;
+package github.eddy.game.handler;
 
 import github.eddy.game.protocol.AbstractMessageHandler;
 import github.eddy.game.protocol.Message;

@@ -6,6 +6,7 @@ import github.eddy.game.client.handler.ClientChannelInitializer;
 import github.eddy.game.common.MsgModuleCode;
 import github.eddy.game.common.MsgServiceCode;
 import github.eddy.game.common.MsgTypeCode;
+import github.eddy.game.handler.ClientMessageHandler;
 import github.eddy.game.protocol.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -20,6 +21,8 @@ import java.util.Scanner;
 public class ClientTest {
     public static void main(String[] args) throws Exception {
         ClientChannelInitializer clientChannelInitializer = new ClientChannelInitializer();
+        clientChannelInitializer.registerMessageHandler(ClientMessageHandler.class);
+
         RainClient client = new RainClient("localhost", 65535);
         client.start(clientChannelInitializer);
 

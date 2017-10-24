@@ -6,6 +6,8 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.Getter;
 
+import java.util.Optional;
+
 /**
  * @author edliao
  * Channel管理中心
@@ -23,27 +25,15 @@ public class ChannelManager {
      */
     @Getter
     private ChannelGroup connected = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    @Getter
-    private ChannelGroup disconnected = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     /**
      * 客户端连接服务器
      */
     public void connect(Channel incoming) {
-
+        connected.add(incoming);
     }
 
-    /**
-     * 登录
-     */
-    public void login(Long userId, Channel incoming) {
-
-    }
-
-    /**
-     * 登出
-     */
-    public void logout(Long userId, Channel incoming) {
-
+    public void disconnect(Channel incoming) {
+        Optional.ofNullable(connected.find(incoming.id())).ifPresent(connected::remove);
     }
 }
