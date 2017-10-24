@@ -1,7 +1,8 @@
-package github.eddy.game.protocol;
+package github.eddy.game.protocol.message;
 
 import com.google.common.base.Charsets;
 import github.eddy.game.common.MsgTypeCode;
+import github.eddy.game.protocol.Version;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import lombok.Getter;
@@ -78,18 +79,24 @@ public class Message {
         this.content = content;
     }
 
+    public String getContentAsString() {
+        return content.toString(Charsets.UTF_8);
+    }
+
     /**
-     * 分发数据时直接复制当前内容
+     * 通过channel发送
      */
-    public Message copyMessage(Channel channel) {
+    public void to(Channel channel) {
+        channel.writeAndFlush(this);
+    }
+
+    /**
+     * 转发数据时需要修改当前Content的来源 ,其他属性不变
+     */
+    public void transTo(Channel channel) {
         ByteBuf byteBuf = channel.alloc().buffer(content.writableBytes());
         byteBuf.writeBytes(content);
         content = byteBuf;
-        return this;
-    }
-
-
-    public String getContentAsString() {
-        return content.toString(Charsets.UTF_8);
+        to(channel);
     }
 }

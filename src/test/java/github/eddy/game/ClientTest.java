@@ -6,8 +6,9 @@ import github.eddy.game.client.handler.ClientChannelInitializer;
 import github.eddy.game.common.MsgModuleCode;
 import github.eddy.game.common.MsgServiceCode;
 import github.eddy.game.common.MsgTypeCode;
-import github.eddy.game.handler.ClientMessageHandler;
-import github.eddy.game.protocol.Message;
+import github.eddy.game.handler.SampleClientHandler;
+import github.eddy.game.im.ChatClientHandler;
+import github.eddy.game.protocol.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
@@ -21,22 +22,27 @@ import java.util.Scanner;
 public class ClientTest {
     public static void main(String[] args) throws Exception {
         ClientChannelInitializer clientChannelInitializer = new ClientChannelInitializer();
-        clientChannelInitializer.registerMessageHandler(ClientMessageHandler.class);
+        clientChannelInitializer
+                .registerMessageHandler(SampleClientHandler.class)
+                .registerMessageHandler(ChatClientHandler.class);
 
         RainClient client = new RainClient("localhost", 65535);
         client.start(clientChannelInitializer);
 
         Channel channel = client.getLocalChannel();
 
-        ByteBuf byteBuf = channel.alloc().buffer();
-        byteBuf.writeCharSequence("Eddy", Charsets.UTF_8);
-        Message message = Message.write(MsgTypeCode.REQUEST, MsgModuleCode.CHAT, MsgServiceCode.HALL_CHAT, byteBuf);
-        channel.writeAndFlush(message);
+        String hello = "Hello";
+        ByteBuf helloByteBuf = channel.alloc().buffer(hello.length());
+        helloByteBuf.writeCharSequence(hello, Charsets.UTF_8);
+        Message.write(MsgTypeCode.REQUEST, MsgModuleCode.DEFAULT, MsgServiceCode.DEFAULT, helloByteBuf).to(channel);
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             String in = scanner.next();
-            System.out.println(in);
+//            System.out.println(in);
+            ByteBuf byteBuf = channel.alloc().buffer(in.length());
+            byteBuf.writeCharSequence(in, Charsets.UTF_8);
+            Message.write(MsgTypeCode.REQUEST, MsgModuleCode.CHAT, MsgServiceCode.HALL_CHAT, byteBuf).to(channel);
         }
     }
 }

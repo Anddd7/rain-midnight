@@ -1,5 +1,6 @@
-package github.eddy.game.protocol;
+package github.eddy.game.protocol.handler;
 
+import github.eddy.game.protocol.codec.Byte2MessageCodec;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -17,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class BaseChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    protected List<Class<? extends AbstractMessageHandler>> handlers = new LinkedList<>();
+    private List<Class<? extends AbstractMessageHandler>> handlers = new LinkedList<>();
 
     public BaseChannelInitializer registerMessageHandler(Class<? extends AbstractMessageHandler> handler) {
         handlers.add(handler);

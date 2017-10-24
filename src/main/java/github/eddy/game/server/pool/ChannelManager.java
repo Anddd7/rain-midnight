@@ -7,6 +7,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.Getter;
 
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author edliao
@@ -35,5 +36,20 @@ public class ChannelManager {
 
     public void disconnect(Channel incoming) {
         Optional.ofNullable(connected.find(incoming.id())).ifPresent(connected::remove);
+    }
+
+    /**
+     * 自定义的channel group集合
+     */
+    private ConcurrentHashMap<String, ChannelGroup> groups = new ConcurrentHashMap<>();
+
+    public ChannelGroup addGroup(String name) {
+        ChannelGroup newGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+        groups.put(name, newGroup);
+        return newGroup;
+    }
+
+    public Optional<ChannelGroup> findGroup(String name) {
+        return Optional.ofNullable(groups.get(name));
     }
 }

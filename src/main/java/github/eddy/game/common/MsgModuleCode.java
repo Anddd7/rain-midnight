@@ -15,9 +15,8 @@ public final class MsgModuleCode {
      * 登录相关
      */
     public static final short USER = 2;
-    public static final short CHAT = 11;
     /**
      * 聊天
      */
-    public static final short WHISPER = 12;
+    public static final short CHAT = 3;
 }

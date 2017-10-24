@@ -32,6 +32,7 @@
 
         <netty.v>4.1.12.Final</netty.v>
         <guava.v>22.0</guava.v>
+        <fastjson.v>1.2.35</fastjson.v>
 
         <lombok.v>1.16.18</lombok.v>
         <junit.v>4.12</junit.v>
@@ -49,6 +50,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.v}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.v}</version>
         </dependency>
 
         <dependency>

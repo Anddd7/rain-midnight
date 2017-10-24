@@ -1,5 +1,6 @@
-package github.eddy.game.protocol;
+package github.eddy.game.protocol.codec;
 
+import github.eddy.game.protocol.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
@@ -16,7 +17,6 @@ public class Byte2MessageCodec extends ByteToMessageCodec<Message> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
-        log.debug("发送消息");
         out.writeInt(msg.getLength())
                 .writeShort(msg.getVersion())
                 .writeShort(msg.getType())
@@ -27,7 +27,6 @@ public class Byte2MessageCodec extends ByteToMessageCodec<Message> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        log.debug("收到消息");
         out.add(
                 Message.read(
                         in.readInt(),

@@ -7,6 +7,9 @@ package github.eddy.game.common;
  */
 public final class MsgServiceCode {
     public static final short DEFAULT = -1;
+    /**
+     * 计时
+     */
     public static final short TIMER_START = 11;
     public static final short TIMER_END = 12;
     /**
@@ -19,6 +22,20 @@ public final class MsgServiceCode {
     /**
      * 聊天消息发送对象
      */
-    public static final short HALL_CHAT = 31;
-    public static final short ROOM_CHAT = 32;
+    public static final short HALL_CHAT = 31;//大厅
+    public static final short ROOM_CHAT = 32;//房间
+    public static final short PERSON_CHAT = 33;//私聊
+
+    public static String getChatChannel(short service) {
+        switch (service) {
+            case HALL_CHAT:
+                return "大厅";
+            case ROOM_CHAT:
+                return "房间";
+            case PERSON_CHAT:
+                return "私聊";
+            default:
+                return "";
+        }
+    }
 }
