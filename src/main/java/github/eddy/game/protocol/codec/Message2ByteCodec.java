@@ -13,7 +13,7 @@ import java.util.List;
  * 消息编解码
  */
 @Slf4j
-public class Byte2MessageCodec extends ByteToMessageCodec<Message> {
+public class Message2ByteCodec extends ByteToMessageCodec<Message> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
@@ -22,6 +22,7 @@ public class Byte2MessageCodec extends ByteToMessageCodec<Message> {
                 .writeShort(msg.getType())
                 .writeShort(msg.getModule())
                 .writeShort(msg.getService())
+                .writeLong(System.currentTimeMillis())
                 .writeBytes(msg.getContent());
     }
 
@@ -34,7 +35,9 @@ public class Byte2MessageCodec extends ByteToMessageCodec<Message> {
                         in.readShort(),
                         in.readShort(),
                         in.readShort(),
+                        in.readLong(),
                         in.readBytes(in.readableBytes()))
+
         );
     }
 }

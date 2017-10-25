@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class SampleServerHandler extends AbstractMessageHandler {
     @Override
     public void channelReadMessage(Channel incoming, Message msg) {
-        log.debug("收到{}消息:{}", incoming.remoteAddress(), msg.getContentAsString());
+        log.debug("收到{}消息", incoming.remoteAddress());
     }
 
 }

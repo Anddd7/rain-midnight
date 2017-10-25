@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ChatServerHandler extends AbstractMessageHandler {
-    ChannelManager channelManager = ChannelManager.getChannelManager();
+    private ChannelManager channelManager = ChannelManager.getChannelManager();
 
     @Override
     public void channelReadMessage(Channel incoming, Message msg) {
-        if (MsgModuleCode.CHAT != msg.getModule() || msg.getType() != MsgTypeCode.REQUEST) {
+        if (msg.getType() != MsgTypeCode.REQUEST || MsgModuleCode.CHAT != msg.getModule()) {
             return;
         }
 
@@ -30,7 +30,7 @@ public class ChatServerHandler extends AbstractMessageHandler {
         //转发给其他人
         msg.setType(MsgTypeCode.NOTICE);
         for (Channel channel : channelManager.getConnected()) {
-            if (channel.id().equals(incoming.id())) {
+            if (channel == incoming) {
                 continue;
             }
             msg.transTo(channel);

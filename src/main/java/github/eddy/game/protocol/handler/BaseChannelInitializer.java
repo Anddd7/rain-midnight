@@ -1,6 +1,6 @@
 package github.eddy.game.protocol.handler;
 
-import github.eddy.game.protocol.codec.Byte2MessageCodec;
+import github.eddy.game.protocol.codec.Message2ByteCodec;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -37,9 +37,10 @@ public class BaseChannelInitializer extends ChannelInitializer<SocketChannel> {
                         0,
                         false)
         );
-        pipeline.addLast(new Byte2MessageCodec());
+        pipeline.addLast(new Message2ByteCodec());
+
         for (Class<? extends AbstractMessageHandler> handler : handlers) {
-            pipeline.addLast(handler.newInstance());
+            pipeline.addLast(handler.getName(),handler.newInstance());
         }
     }
 }

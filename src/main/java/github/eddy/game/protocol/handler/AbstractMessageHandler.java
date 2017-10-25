@@ -18,6 +18,7 @@ public abstract class AbstractMessageHandler extends SimpleChannelInboundHandler
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         channelReadMessage(ctx.channel(), msg);
+        ctx.fireChannelRead(msg);
     }
 
     /**
@@ -49,6 +50,6 @@ public abstract class AbstractMessageHandler extends SimpleChannelInboundHandler
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("", cause);
-        ctx.close();
+        //ctx.close();
     }
 }

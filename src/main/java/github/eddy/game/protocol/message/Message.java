@@ -36,9 +36,19 @@ public class Message {
      */
     short service;
     /**
+     * 8 当前时间戳 ( 只精确后几位 )
+     */
+    long timestamp;
+
+    /**
      * 消息体
      */
     ByteBuf content;
+
+    /**
+     * 消息体字节数组 ,用于消息复制转发
+     */
+    byte[] contentBytes;
 
 
     /**
@@ -54,7 +64,7 @@ public class Message {
     }
 
     private Message(short type, short action, short service, ByteBuf content) {
-        this.length = 12 + content.readableBytes();
+        this.length = 20 + content.readableBytes();
 
         this.type = type;
         this.module = action;
@@ -65,17 +75,18 @@ public class Message {
     /**
      * 用于序列化时生成一个Message
      */
-    public static Message read(int length, short version, short type, short action, short service, ByteBuf content) {
-        return new Message(length, version, type, action, service, content);
+    public static Message read(int length, short version, short type, short action, short service, long timestamp, ByteBuf content) {
+        return new Message(length, version, type, action, service, timestamp, content);
     }
 
-    private Message(int length, short version, short type, short action, short service, ByteBuf content) {
+    private Message(int length, short version, short type, short action, short service, long timestamp, ByteBuf content) {
         this.length = length;
 
         this.version = version;
         this.type = type;
         this.module = action;
         this.service = service;
+        this.timestamp = timestamp;
         this.content = content;
     }
 
@@ -94,9 +105,10 @@ public class Message {
      * 转发数据时需要修改当前Content的来源 ,其他属性不变
      */
     public void transTo(Channel channel) {
-        ByteBuf byteBuf = channel.alloc().buffer(content.writableBytes());
-        byteBuf.writeBytes(content);
-        content = byteBuf;
+//        ByteBuf byteBuf = channel.alloc().buffer(content.writableBytes());
+//        byteBuf.writeBytes(content);
+//        content = byteBuf;
+        content.resetReaderIndex();
         to(channel);
     }
 }

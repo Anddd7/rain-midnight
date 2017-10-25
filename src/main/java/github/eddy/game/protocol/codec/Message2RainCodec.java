@@ -43,9 +43,10 @@ public interface Message2RainCodec<T> {
      * @return 包含 字符串长度+内容 的byte[]
      */
     default byte[] writeString(String string) {
-        return ByteBuffer.allocate(Integer.BYTES + string.length())
+        byte[] stringBytes = string.getBytes();
+        return ByteBuffer.allocate(Integer.BYTES + stringBytes.length)
                 .putInt(string.length())
-                .put(string.getBytes())
+                .put(stringBytes)
                 .array();
     }
 }

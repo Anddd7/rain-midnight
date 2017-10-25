@@ -8,7 +8,9 @@ import github.eddy.game.common.MsgServiceCode;
 import github.eddy.game.common.MsgTypeCode;
 import github.eddy.game.handler.SampleClientHandler;
 import github.eddy.game.im.ChatClientHandler;
+import github.eddy.game.im.ChatMessage;
 import github.eddy.game.protocol.message.Message;
+import github.eddy.game.user.BaseUser;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
@@ -36,12 +38,23 @@ public class ClientTest {
         helloByteBuf.writeCharSequence(hello, Charsets.UTF_8);
         Message.write(MsgTypeCode.REQUEST, MsgModuleCode.DEFAULT, MsgServiceCode.DEFAULT, helloByteBuf).to(channel);
 
+        BaseUser user = new BaseUser();
+        user.setId(0L);
+        user.setName("Eddy");
+
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             String in = scanner.next();
 //            System.out.println(in);
-            ByteBuf byteBuf = channel.alloc().buffer(in.length());
-            byteBuf.writeCharSequence(in, Charsets.UTF_8);
+
+            ChatMessage chatMessage = new ChatMessage();
+            chatMessage.setFrom(user);
+            chatMessage.setString(in);
+            byte[] bytes = chatMessage.encode();
+
+            ByteBuf byteBuf = channel.alloc().buffer(bytes.length);
+            byteBuf.writeBytes(bytes);
+
             Message.write(MsgTypeCode.REQUEST, MsgModuleCode.CHAT, MsgServiceCode.HALL_CHAT, byteBuf).to(channel);
         }
     }
