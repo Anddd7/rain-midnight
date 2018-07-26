@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>github.eddy.game</groupId>
-    <artifactId>rain-midnight</artifactId>
-    <version>0.0.1</version>
+    <artifactId>thunder-cloud</artifactId>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>rain-midnight</name>
@@ -30,13 +30,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.jdk.v>1.8</project.build.jdk.v>
 
-        <netty.v>4.1.12.Final</netty.v>
-        <guava.v>22.0</guava.v>
-        <fastjson.v>1.2.35</fastjson.v>
+        <netty.v>4.1.27.Final</netty.v>
+        <guava.v>25.1-jre</guava.v>
+        <fastjson.v>1.2.47</fastjson.v>
 
-        <lombok.v>1.16.18</lombok.v>
+        <lombok.v>1.16.22</lombok.v>
+        <mockito.v>2.20.0</mockito.v>
         <junit.v>4.12</junit.v>
-        <slf4j-log4j12.v>1.7.5</slf4j-log4j12.v>
+        <slf4j-log4j12.v>1.7.25</slf4j-log4j12.v>
     </properties>
 
     <dependencies>
@@ -68,6 +69,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.v}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.v}</version>
             <scope>test</scope>
         </dependency>
 
