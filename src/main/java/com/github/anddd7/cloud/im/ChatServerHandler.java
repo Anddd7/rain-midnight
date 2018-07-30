@@ -10,21 +10,33 @@ import com.github.anddd7.cloud.core.common.ServiceCodes.CHAT;
 import com.github.anddd7.cloud.core.protocol.codec.MessagePackage;
 import com.github.anddd7.cloud.core.protocol.codec.Object2ByteCodec;
 import com.github.anddd7.cloud.core.protocol.handler.AbstractServiceHandler;
-import com.github.anddd7.cloud.core.protocol.handler.GroupServiceHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
-import lombok.Getter;
-import lombok.Setter;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Slf4j
-public class ChatServerHandler extends AbstractServiceHandler implements GroupServiceHandler {
+public class ChatServerHandler extends AbstractServiceHandler {
 
-  @Getter
-  @Setter
-  private ChannelGroup channels;
+  private static ChatServerHandler INSTANCE;
+
+  public static ChatServerHandler getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new ChatServerHandler();
+    }
+    return INSTANCE;
+  }
+
+  /* ----------------- */
+
+  private final ChannelGroup channels;
+
+  private ChatServerHandler() {
+    this.channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+  }
 
   @Override
   public boolean filter(MessagePackage msg) {

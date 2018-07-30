@@ -1,9 +1,11 @@
-package com.github.anddd7.cloud.im;
+package com.github.anddd7.game;
 
 import com.github.anddd7.cloud.CloudClient;
 import com.github.anddd7.cloud.core.common.MessageTypeEnum;
 import com.github.anddd7.cloud.core.common.ServiceCodes.CHAT;
 import com.github.anddd7.cloud.core.protocol.codec.MessagePackage;
+import com.github.anddd7.cloud.im.ChatClientHandler;
+import com.github.anddd7.cloud.im.ChatMessage;
 import com.github.anddd7.cloud.user.LoginUser;
 import java.util.Collections;
 
